@@ -1,5 +1,5 @@
 import React from "react";
 
 export const Task = ({ task }) =>{
-    return <li>{Task.text}</li>
+    return <li>{task.text}</li>
 }
