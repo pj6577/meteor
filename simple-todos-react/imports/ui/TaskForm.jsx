@@ -8,14 +8,11 @@ export const TaskForm = () =>{
 
     const handelSubmit =e =>{
         e.preventDefault();
-
         if (!text) return;
-
         TasksCollection.insert({
             text:text.trim(),
             createAt: new Date()
         });
-
         setText("");
     }
 
