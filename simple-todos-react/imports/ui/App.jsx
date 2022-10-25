@@ -9,15 +9,11 @@ import { LoginForm } from './LoginForm';
 
 // 토글 박스
 const toggleChecked = ({ _id, isChecked }) => {
-  TasksCollection.update(_id, {
-    $set: {
-      isChecked: !isChecked
-    },
-  });
+  Meteor.call('tasks.setIsChecked', _id, !isChecked);
 };
 
 // 삭제
-const deleteTask = ({ _id }) => TasksCollection.remove(_id);
+const deleteTask = ({ _id }) => Meteor.call('tasks.remove', _id);
 
 export const App = () => {
   const user = useTracker(() => Meteor.user());
@@ -76,7 +72,7 @@ export const App = () => {
             <div className="user" onClick={logout}>
               {user.username || user.profile.name} 🚪
             </div>
-            <TaskForm user={user} />
+            <TaskForm />
             <div className="filter">
               <button onClick={() => setHideCompleted(!hideCompleted)}>
                 {hideCompleted ? 'Show All' : 'Hide Completed'}
