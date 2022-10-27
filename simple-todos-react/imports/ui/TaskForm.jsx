@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {Meteor} from 'meteor/meteor';
-import { TasksCollection } from '../api/TasksCollection';
+import { TasksCollection } from '../db/TasksCollection';
 
 
 export const TaskForm = ({user}) =>{
