@@ -18,6 +18,7 @@ ddp@1.4.0
 ddp-client@2.6.0
 ddp-common@1.4.0
 ddp-server@2.6.0
+dev-error-overlay@0.1.1
 diff-sequence@1.1.1
 dynamic-import@0.7.2
 ecmascript@0.16.2
