@@ -1,12 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { TasksCollection } from '../api/TasksCollection';
+import { TasksCollection } from '../db/TasksCollection';
 import { ReactiveDict } from 'meteor/reactive-dict';
 import './App.html';
 import './Task.js';
 import './Login.js';
 
 const HIDE_COMPLETED_STRING = 'hideCompleted';
+
+const IS_LOADING_STRING = "isLoading";
+
 
 const getUser = () => Meteor.user();
 const isUserLogged = () => !!getUser();
@@ -23,8 +26,14 @@ const getTasksFilter = () => {
   return { userFilter, pendingOnlyFilter };
 };
 
+
 Template.mainContainer.onCreated(function mainContainerOnCreated() {
   this.state = new ReactiveDict();
+
+  const handler = Meteor.subscribe('tasks');
+  Tracker.autorun(() => {
+    this.state.set(IS_LOADING_STRING, !handler.ready());
+  });
 });
 
 Template.mainContainer.events({
@@ -38,6 +47,7 @@ Template.mainContainer.events({
 });
 
 Template.mainContainer.helpers({
+  
   tasks() {
     const instance = Template.instance();
     const hideCompleted = instance.state.get(HIDE_COMPLETED_STRING);
@@ -55,6 +65,7 @@ Template.mainContainer.helpers({
       }
     ).fetch();
   },
+  
   hideCompleted() {
     return Template.instance().state.get(HIDE_COMPLETED_STRING);
   },
@@ -76,6 +87,10 @@ Template.mainContainer.helpers({
   getUser() {
     return getUser();
   },
+  isLoading() {
+    const instance = Template.instance();
+    return instance.state.get(IS_LOADING_STRING);
+  }
 });
 
 Template.form.events({

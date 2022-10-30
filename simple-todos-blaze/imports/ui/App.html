@@ -29,6 +29,10 @@
                         </button>
                     </div>
     
+                    {{#if isLoading}}
+                        <div class="loading">loading...</div>
+                    {{/if}}
+    
                     <ul class="tasks">
                         {{#each tasks}}
                             {{> task}}
@@ -47,3 +51,4 @@
             <button type="submit">Add Task</button>
         </form>
     </template>
+
