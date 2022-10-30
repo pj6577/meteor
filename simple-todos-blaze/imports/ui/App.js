@@ -79,22 +79,18 @@ Template.mainContainer.helpers({
 });
 
 Template.form.events({
-  'submit .task-form'(event) {
+  "submit .task-form"(event) {
     // Prevent default browser form submit
     event.preventDefault();
 
     // Get value from form element
-    const { target } = event;
+    const target = event.target;
     const text = target.text.value;
 
     // Insert a task into the collection
-    TasksCollection.insert({
-      text,
-      userId: getUser()._id,
-      createdAt: new Date(), // current time
-    });
+    Meteor.call('tasks.insert', text);
 
     // Clear form
     target.text.value = '';
-  },
-});
+  }
+})
