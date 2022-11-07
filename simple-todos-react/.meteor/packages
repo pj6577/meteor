@@ -24,3 +24,4 @@ accounts-github
 service-configuration
 meteortesting:mocha
 quave:testing
+quave:graphql
