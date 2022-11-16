@@ -1,26 +1,44 @@
+import { ApolloServer, gql } from "apollo-server";
 import { Meteor } from 'meteor/meteor';
 import { startGraphQLServer } from 'meteor/quave:graphql/server';
+import { startStandaloneServer } from '@apollo/server/standalone';
 
 const log = error => console.error('GraphQL server error', error);
 
-const UserNmae = `
-    type Query {
-        loggedUser : user
+
+const typeDefs = gql `
+  
+  type Query {
+      loggedUser:User
     }
-    type User {
-        _id : ID!
-        username : String
-    }
+  
+  type User {
+    _id: ID
+    username: String
+  }
+
+
 `;
-const UserResolvers = {
-    Query :{
-        async loggedUser(root, args, {userId}){
-            if(!userId){
-                return null;
-            }
-            return Meteor.user.findOne(userId);
-        },
+
+const resolvers = {
+  Query: {
+    async loggedUser(root, args, {userId}) {
+      console.log(` loggedUser resolvers call  `)
+      if (!{userId}) {
+        console.log(`!userId `);
+        return null;
+      }
+      return Meteor.users.findOne({userId});
     },
+  },
+
 };
 
-startGraphQLServer({typeDefs : [UserSchema], resolvers : [UserResolvers], log});
+const server = new ApolloServer({ typeDefs:[typeDefs], resolvers:[resolvers], log });
+
+
+server.listen().then(({ url }) => {
+  console.log(` 🚀  Running on  ${url}`);
+})
+
+// startGraphQLServer({ typeDefs, resolvers });

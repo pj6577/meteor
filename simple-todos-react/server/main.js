@@ -1,19 +1,23 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
-import { TasksCollection } from '../imports/db/TasksCollection';
-import { ServiceConfiguration } from 'meteor/service-configuration';
-import '../imports/api/taskMethods';
+import { TasksCollection } from '/imports/db/TasksCollection';
+
+import '../imports/api/graphql';
+
+import '../imports/api/tasksMethods';
 import '../imports/api/tasksPublications';
 
 const insertTask = (taskText, user) =>
-TasksCollection.insert({
-  text: taskText,
-  userId: user._id,
-  createdAt: new Date(),
-});
+  TasksCollection.insert({
+    text: taskText,
+    userId: user._id,
+    createdAt: new Date(),
+  });
 
 const SEED_USERNAME = '박재현';
 const SEED_PASSWORD = '1234';
+
+
 
 Meteor.startup(() => {
   if (!Accounts.findUserByUsername(SEED_USERNAME)) {
@@ -37,14 +41,3 @@ Meteor.startup(() => {
     ].forEach(taskText => insertTask(taskText, user));
   }
 });
-
-ServiceConfiguration.configurations.upsert(
-  { service: 'github' },
-  {
-    $set: {
-      loginStyle: 'popup',
-      clientId: 'a78d3027319c3d9170a0', 
-      secret: '3fcc7a6ecdd58ba8a695456501b57d6ed8907911', 
-    },
-  }
-);
